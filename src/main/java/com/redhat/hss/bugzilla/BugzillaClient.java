@@ -39,7 +39,7 @@ public abstract class BugzillaClient<T> {
 
     private final Semaphore loginSemaphore = new Semaphore(1);
 
-    private final ThreadLocal<String> threadLocal = new ThreadLocal<String>();
+    private final ThreadLocal<String> token = new ThreadLocal<String>();
 
     /**
      * Connects to the given host.
@@ -79,7 +79,7 @@ public abstract class BugzillaClient<T> {
 
     public abstract List<T> queryList(T t);
 
-    public void login(String userName, String password) {
+    public String login(String userName, String password) {
         LOGGER.debug("Login into Bugzilla");
         Map<String, Object> params = new HashMap<String, Object>(2);
         params.put("login", userName);
@@ -95,6 +95,9 @@ public abstract class BugzillaClient<T> {
         if (result == null || result.isEmpty()) {
             throw new BugzillaException("Failed to login into Bugzilla");
         }
+        String tokenString = result.get("token").toString();
+        token.set(tokenString);
+        return tokenString;
     }
 
     public T excute(T t) {
