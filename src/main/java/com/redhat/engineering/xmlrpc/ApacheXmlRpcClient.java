@@ -13,6 +13,8 @@ import org.apache.xmlrpc.client.XmlRpcSunHttpTransportFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.redhat.hss.bugzilla.exception.BZXmlRpcException;
+
 public class ApacheXmlRpcClient implements XmlRpcClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ApacheXmlRpcClient.class);
@@ -92,12 +94,16 @@ public class ApacheXmlRpcClient implements XmlRpcClient {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T execute() throws XmlRpcException {
+    public <T> T execute() throws BZXmlRpcException {
         String method = this.method.get();
         if (StringUtils.isBlank(method)) {
-            throw new XmlRpcException("XMLRPC Methos cannot be null");
+            throw new BZXmlRpcException("XMLRPC Methos cannot be null");
         }
-        return (T) client.execute(method, this.parameters.get());
+        try {
+            return (T) client.execute(method, this.parameters.get());
+        } catch (XmlRpcException e) {
+            throw new BZXmlRpcException(e.getMessage(), e);
+        }
     }
 
 }

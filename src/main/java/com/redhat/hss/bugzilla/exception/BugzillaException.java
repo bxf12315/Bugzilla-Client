@@ -13,18 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.redhat.hss.bugzilla;
+package com.redhat.hss.bugzilla.exception;
 
 /**
  * @author xiabai
  * 
  */
-public class XmlRpcException extends RuntimeException {
-    public XmlRpcException(String msg, Exception ex) {
+public class BugzillaException extends RuntimeException {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -7332472169146722064L;
+
+    public BugzillaException(String msg, Exception ex) {
         super(msg, ex);
     }
 
-    public XmlRpcException(String msg) {
+    public BugzillaException(String msg) {
         super(msg);
     }
 }

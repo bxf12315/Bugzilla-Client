@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 
-import org.apache.xmlrpc.XmlRpcException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.redhat.engineering.xmlrpc.XmlRpcClient;
+import com.redhat.hss.bugzilla.exception.BugzillaException;
 import com.redhat.hss.uitl.PropertiesUtils;
 
 /**
@@ -86,11 +86,7 @@ public abstract class BugzillaClient<T> {
         params.put("password", password);
         String method = PropertiesUtils.getValue("BZ_USER_LOGIN").toString();
         Map result;
-        try {
-            result = client.method(method).parameter(params).execute();
-        } catch (XmlRpcException e) {
-            throw new BugzillaException(e.getMessage(), e);
-        }
+        result = client.method(method).parameter(params).execute();
         LOGGER.debug("Login result: {}", result);
         if (result == null || result.isEmpty()) {
             throw new BugzillaException("Failed to login into Bugzilla");

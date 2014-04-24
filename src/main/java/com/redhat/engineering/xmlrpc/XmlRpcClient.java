@@ -1,6 +1,6 @@
 package com.redhat.engineering.xmlrpc;
 
-import org.apache.xmlrpc.XmlRpcException;
+import com.redhat.hss.bugzilla.exception.BZXmlRpcException;
 
 public interface XmlRpcClient {
 
@@ -14,6 +14,6 @@ public interface XmlRpcClient {
 
     public XmlRpcClient parameter(Object value);
 
-    public <T> T execute() throws XmlRpcException;
+    public <T> T execute() throws BZXmlRpcException;
 
 }
